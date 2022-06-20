@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springboot
+  template:
+    metadata:
+      labels:
+        app: springboot
+    spec:
+      containers:
+        - name: springboot
+          image: mariopetkovski/springboot
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: PORT
+              value: "8081"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: springboot
